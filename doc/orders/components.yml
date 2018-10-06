@@ -1,0 +1,50 @@
+components:
+  schemas:
+    orderDetails:
+      properties:
+        orderPosition:
+          type: object
+          properties:
+            x:
+              type: number
+            y:
+              type: number
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              product:
+                type: object
+                properties:
+                  uuid:
+                    type: string
+                    format: uuid
+                  unit:
+                    type: number
+                  zone:
+                    type: string
+              unit:
+                type: number
+    createOrder:
+      properties:
+        orderPosition:
+          type: object
+          properties:
+            x:
+              type: number
+            y:
+              type: number
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              uuid:
+                type: string
+                format: uuid
+              unit:
+                type: number
+      required:
+      - orderPosition
+      - products

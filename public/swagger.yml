@@ -1,0 +1,288 @@
+components:
+  schemas:
+    createCustomer:
+      properties:
+        name:
+          type: string
+        password:
+          type: string
+      required:
+        - name
+        - password
+    orderDetails:
+      properties:
+        orderPosition:
+          type: object
+          properties:
+            x:
+              type: number
+            'y':
+              type: number
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              product:
+                type: object
+                properties:
+                  uuid:
+                    type: string
+                    format: uuid
+                  unit:
+                    type: number
+                  zone:
+                    type: string
+              unit:
+                type: number
+    createOrder:
+      properties:
+        orderPosition:
+          type: object
+          properties:
+            x:
+              type: number
+            'y':
+              type: number
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              uuid:
+                type: string
+                format: uuid
+              unit:
+                type: number
+      required:
+        - orderPosition
+        - products
+    productDetails:
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        unit:
+          type: number
+        zone:
+          type: object
+          properties:
+            uuid:
+              type: string
+              format: uuid
+            color:
+              type: string
+            entries:
+              type: array
+              items:
+                type: object
+                properties:
+                  x:
+                    type: number
+                  'y':
+                    type: number
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+paths:
+  /customers/signup:
+    post:
+      tags:
+        - customers
+      summary: Create a customer.
+      description: Create a customer into database.
+      requestBody:
+        description: Customer description.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createCustomer'
+      responses:
+        '201':
+          description: Success
+        '400':
+          description: Invalid request
+        '401':
+          description: Request not authenticated
+        '403':
+          description: Not allowed to perform request
+        '500':
+          description: Internal server error
+  /customers/token:
+    post:
+      tags:
+        - customers
+      summary: Create a customer token.
+      description: Create a customer authentication token.
+      requestBody:
+        description: Customer description.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createCustomer'
+            example:
+              name: test
+              password: '123456'
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Invalid request
+        '401':
+          description: Request not authenticated
+        '403':
+          description: Not allowed to perform request
+        '500':
+          description: Internal server error
+  /workers:
+    get:
+      tags:
+        - general
+      summary: Gets all workers.
+      description: Gets all workers assigned to shop.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Invalid request
+        '401':
+          description: Request not authenticated
+        '403':
+          description: Not allowed to perform request
+        '500':
+          description: Internal server error
+  /stats:
+    get:
+      tags:
+        - general
+      summary: Gets all stats .
+      description: Gets all of jobs assigned to shop.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Invalid request
+        '401':
+          description: Request not authenticated
+        '403':
+          description: Not allowed to perform request
+        '500':
+          description: Internal server error
+  /orders:
+    post:
+      tags:
+        - orders
+      summary: Create a order.
+      description: Create a order and place it into queue.
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Order description.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createOrder'
+      responses:
+        '201':
+          description: Success
+        '400':
+          description: Invalid request
+        '401':
+          description: Request not authenticated
+        '403':
+          description: Not allowed to perform request
+        '500':
+          description: Internal server error
+    get:
+      tags:
+        - orders
+      summary: Gets orders.
+      description: Gets orders of user.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/orderDetails'
+        '400':
+          description: Invalid request
+        '401':
+          description: Request not authenticated
+        '403':
+          description: Not allowed to perform request
+        '500':
+          description: Internal server error
+  /products:
+    get:
+      tags:
+        - products
+      summary: Create a product.
+      description: Create a product and place it into queue.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: zoneColor
+          description: Zone color to filter by.
+          in: queyr
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/productDetails'
+        '400':
+          description: Invalid request
+        '401':
+          description: Request not authenticated
+        '403':
+          description: Not allowed to perform request
+        '500':
+          description: Internal server error
+  /zones:
+    get:
+      tags:
+        - zones
+      summary: Gets zones.
+      description: Gets all zones in shop.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Invalid request
+        '401':
+          description: Request not authenticated
+        '403':
+          description: Not allowed to perform request
+        '500':
+          description: Internal server error
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Worker shop API
+  description: Worker shop api specification doc and client.
+  contact:
+    email: 159030@supinfo.com
+  license:
+    name: '(c) Copyright 2018 Jan Socha, all rights reserved.'

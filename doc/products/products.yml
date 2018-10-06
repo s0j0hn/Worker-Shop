@@ -1,0 +1,33 @@
+paths:
+  /products:
+    get:
+      tags:
+      - products
+      summary: Create a product.
+      description: Create a product and place it into queue.
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: zoneColor
+        description: Zone color to filter by.
+        in: queyr
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/productDetails'
+        '400':
+          description: Invalid request
+        '401':
+          description: Request not authenticated
+        '403':
+          description: Not allowed to perform request
+        '500':
+          description: Internal server error

@@ -1,0 +1,52 @@
+paths:
+  /customers/signup:
+    post:
+      tags:
+      - customers
+      summary: Create a customer.
+      description: Create a customer into database.
+      requestBody:
+        description: Customer description.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createCustomer'
+      responses:
+        '201':
+          description: Success
+        '400':
+          description: Invalid request
+        '401':
+          description: Request not authenticated
+        '403':
+          description: Not allowed to perform request
+        '500':
+          description: Internal server error
+  /customers/token:
+    post:
+      tags:
+      - customers
+      summary: Create a customer token.
+      description: Create a customer authentication token.
+      requestBody:
+        description: Customer description.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createCustomer'
+            example:
+              name: 'test'
+              password: '123456'
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Invalid request
+        '401':
+          description: Request not authenticated
+        '403':
+          description: Not allowed to perform request
+        '500':
+          description: Internal server error

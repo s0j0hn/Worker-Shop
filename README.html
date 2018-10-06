@@ -1,0 +1,107 @@
+<p><a href="https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html"><img src="https://img.shields.io/badge/TypeScript-3.0-blue.svg" alt="TypeScript version" /></a>
+<a href="https://nodejs.org/dist/latest-v8.x/docs/api/"><img src="https://img.shields.io/badge/Node.js->=%208.9-blue.svg" alt="Node.js version" /></a></p>
+
+<h1 id="resitworkershop">Resit Worker Shop</h1>
+
+<p>Architecture de fait avec <a href="https://nodejs.org/dist/latest-v8.x/docs/api/">Node.js</a> et <a href="https://www.typescriptlang.org/">TypeScript</a> <a href="https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html">3.0</a>.</p>
+
+<p>Inclus:</p>
+
+<ul>
+<li><a href="https://www.typescriptlang.org/">TypeScript</a> <a href="https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html">3.0</a>,</li>
+
+<li><a href="https://palantir.github.io/tslint/">TSLint 5</a>,</li>
+
+<li>Definition de types pour nodejs et autres composants,</li>
+
+<li><a href="#available-scripts">NPM scripts for common operations</a>,</li>
+
+<li>Redis et Mongodb</li>
+
+<li>Support docker compose,</li>
+
+<li>Support de logger</li>
+
+<li>Operations asynchrone</li>
+
+<li>Support swagger</li>
+
+<li>Authentication avec Passport et JWT</li>
+</ul>
+
+<h2 id="pourdmarrer">Pour démarrer</h2>
+
+<p>Ce projet doit être lancé avec une version LTS de <a href="https://nodejs.org/dist/latest-v8.x/docs/api/">Node.js</a>.
+Il vous faudra se procurer aussi docker et docker-compose sur votre système d'exploitation et d'initialiser le docker swarm. On part de base qu'il est préférable de lancer ce projet sur un Linux:</p>
+
+<pre><code class="sh language-sh">https://docs.docker.com/compose/install/#install-compose
+
+https://docs.docker.com/engine/swarm/#swarm-mode-key-concepts-and-tutorial
+</code></pre>
+
+<p>Le tout sera lancé avec un serveur Redis pour les robots et une base de donné NoSQL Mongodb</p>
+
+<pre><code class="sh language-sh">https://redis.io/
+
+https://www.mongodb.com/
+</code></pre>
+
+<h2 id="scriptsdelancements">Scripts de lancements</h2>
+
+<ul>
+<li><code>build</code> - Transformer typescript en javascript,</li>
+
+<li><code>run:api</code> - Lance api,</li>
+
+<li><code>run:robot</code> - Lance robot,</li>
+
+<li><code>lint</code> - Tester les fichiers,</li>
+
+<li><code>docker:start</code> - Démarre les conteneurs docker compose</li>
+
+<li><code>docker:stop</code> - Arrete les conteneurs docker compose</li>
+</ul>
+
+<p>Pour télécharger les dépendances on lance la commande:</p>
+
+<pre><code class="sh language-sh">yarn install
+</code></pre>
+
+<p>ou</p>
+
+<pre><code class="sh language-sh">npm install
+</code></pre>
+
+<p>Example: (Vous pouvez utiliser aussi 'npm')</p>
+
+<pre><code class="sh language-sh">yarn docker:start
+</code></pre>
+
+<p>Une fois les dockers lancé et opérationnel nous pouvons démarrer l'API. D'abord il faut transformer le Typescript:</p>
+
+<pre><code class="sh language-sh">yarn build
+</code></pre>
+
+<p>Et après (il faut ajouter le paramètre APP_SEED=true pour remplir la database mais seulement la première fois)</p>
+
+<pre><code class="sh language-sh">APP_SEED=true yarn run:api
+</code></pre>
+
+<p>Ensuite on peut faire démarrer notre robot/worker. Ils ont besoin d'une position X et Y initial de lancement.</p>
+
+<pre><code class="sh language-sh">ROBOT_POSITION_X=3 ROBOT_POSITION_Y=1 yarn run:robot
+</code></pre>
+
+<p>Chaque robot est instancié dans son processus qui se lié à sa queue. Il NE DOIT PAS avoir des robot avec les mêmes positions.</p>
+
+<p>Pour toute modification de port de l'API, address... On va se référer vers le fichier 'src/app/config/config.ts'</p>
+
+<h2 id="routes">Routes</h2>
+
+<p>La documentation des routes est disponible après le lancement de l'API sur url(defaut):</p>
+
+<pre><code class="sh language-sh">http;//localhost:8080/docs
+</code></pre>
+
+<p>Elle pourra servir de client pour interagir avec l'API.
+L'utilisateur va se créer un compte ensuite va récupérer son token et l'entrer dans les paramètres Authorize de swagger pour accéder aux autres requetés</p>

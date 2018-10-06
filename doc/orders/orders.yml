@@ -1,0 +1,51 @@
+paths:
+  /orders:
+    post:
+      tags:
+      - orders
+      summary: Create a order.
+      description: Create a order and place it into queue.
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Order description.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createOrder'
+      responses:
+        '201':
+          description: Success
+        '400':
+          description: Invalid request
+        '401':
+          description: Request not authenticated
+        '403':
+          description: Not allowed to perform request
+        '500':
+          description: Internal server error
+    get:
+      tags:
+      - orders
+      summary: Gets orders.
+      description: Gets orders of user.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/orderDetails'
+        '400':
+          description: Invalid request
+        '401':
+          description: Request not authenticated
+        '403':
+          description: Not allowed to perform request
+        '500':
+          description: Internal server error

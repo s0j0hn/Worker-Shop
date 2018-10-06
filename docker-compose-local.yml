@@ -1,0 +1,23 @@
+version: '3.2'
+services:
+  mongodb:
+    image: mvertes/alpine-mongo
+    hostname: mongodb
+    ports:
+      - 27017:27017
+    networks:
+      - resit
+
+  redis:
+    image: comodal/alpine-redis
+    hostname: redis
+    ports:
+      - 6379:6379
+    networks:
+      - resit
+    command: ['--port', '6379', '--protected-mode', 'no']
+
+networks:
+  resit:
+    driver: overlay
+    attachable: true

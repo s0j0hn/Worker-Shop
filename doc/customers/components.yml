@@ -1,0 +1,11 @@
+components:
+  schemas:
+    createCustomer:
+      properties:
+        name:
+          type: string
+        password:
+          type: string
+      required:
+      - name
+      - password

@@ -1,0 +1,15 @@
+{
+  "extends": [
+    "tslint:recommended",
+    "tslint-config-airbnb"
+  ],
+  "rules": {
+    "max-line-length": {
+      "options": [
+        200
+      ]
+    },
+    "object-literal-sort-keys": false,
+    "member-ordering": false
+  }
+}
